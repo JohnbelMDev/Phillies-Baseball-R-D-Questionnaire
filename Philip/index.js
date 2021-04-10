@@ -1,92 +1,59 @@
+
+
 const fetch = require('node-fetch')
 const cheerio = require("cheerio");
 let salaries = []
 
+// using fetch to make request, so I can be able to access the data from the table
+// from the table row
 fetch('https://questionnaire-148920.appspot.com/swe/data.html')
+// extracting the text from the response body
 .then(response => response.text())
 .then(html =>{
+  // 
   const $ = cheerio.load(html);
+  // in order to grab the selectors below and access all of the player's salary
+  // I had to go on the browser and use inspect tool to select an element
+  //using each too loop to iterate over the doom
  $("#salaries-table > tbody > tr > td.player-salary").each((index, element) => {
+
    var numberPattern = '[0-9]+(?:,[0-9]{3})*(?:\.[0-9]+)?';
 
 const salary = $(element).text().match( numberPattern )
-   // console.log($(element).text());
+// checking if salary if not null to print out all the numbers
    if(salary !== null){
      // console.log(salary);
+    //  using s to store the first index of salary '
+    //  and spliting them by comma in order to rid of the commas 
+    //  then I used join to join them by space
+    
      const s = parseInt(salary[0].split(',').join(''))
+     //using salaries to store all the values from s as an array
      salaries.push(s)
-     // console.log(salaries);
    }
-   // console.log(salaries);
+  
  })
+
+ //  using sortedArray to sort all the salaries from  highest to lowerst
  let sortedArray = salaries.sort((a,b) => b - a)
   // sortedArray.splice()
-  let divide
+  // using slice to grab the numbers starting 
+  // from the zero index to the last element before 125 and storing those values 
+  // inside top Salaries
   let topSalaries = sortedArray.slice(0,125)
+  //using reduce on topSalaries to calculate the sum and storing the sum in total
   let total = topSalaries.reduce((sum,salary) => sum + salary)
+  
   let average = total / topSalaries.length
-     for (var i = 0; i < topSalaries.length; i++) {
-      // console.log(topSalaries[i]);
-      // let divide = topSalaries.length / 5
-       if( i < 1){
-         let add = topSalaries.reduce((a,b) => a + b) / 100000000
-        console.log(pattern(add));
-        console.log(add);
-       }
-       // console.log(divide);
-
-}
- // console.log('this is the average',average);
+  // printing out the average 
+  console.log('average',average);
+  
 });
-// const request = require("request-promise");
-
-function pattern(n) {
-  var output = "*";
-  let temp
-  let last = []
-  let num1 = ''
-  let answer = '';
-  let i = 1
-  for (i; i <= n; i++) {
-    temp = output.repeat(i - 1)
-    i * 1
-
-  if (i === 1){
-    temp += ''
-  }
-  else {
-   temp += i
-  }
-  if(i==n){
-    temp +=''
-  }
-  else {
-    temp +='\n'
-  }
-temp = num1 + temp
-    answer += temp
-
-  }
-  return answer
-}
-// async function main() {
-//  const result = await request.get("https://questionnaire-148920.appspot.com/swe/data.html");
-//  const $ = cheerio.load(result);
-//
-//  $("#salaries-table > tbody > tr > td").each((index, element) => {
-//    console.log($(element).text());
-//  });
-// }
-
-// main();
-
-//loop through the first 125 divide by a million
-    //print the numbers of stars
-//divide each numbers inside by a million for graph
-//will give the numbers of starts to print
 
 
 
-//create
+
+
+
 //cite
 //https://medium.com/@stefanhyltoft/scraping-html-tables-with-nodejs-request-and-cheerio-e3c6334f661b
