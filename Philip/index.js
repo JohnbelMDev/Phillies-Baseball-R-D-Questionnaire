@@ -10,12 +10,12 @@ fetch('https://questionnaire-148920.appspot.com/swe/data.html')
 // extracting the text from the response body
 .then(response => response.text())
 .then(html =>{
-  // 
+  // using the cheerio library
   const $ = cheerio.load(html);
   // in order to grab the selectors below and access all of the player's salary
   // I had to go on the browser and use inspect tool to select an element
   //using each too loop to iterate over the doom
- $("#salaries-table > tbody > tr > td.player-salary").each((index, element) => {
+ $ ("#salaries-table > tbody > tr > td.player-salary").each((index, element) => {
 
    var numberPattern = '[0-9]+(?:,[0-9]{3})*(?:\.[0-9]+)?';
 
@@ -36,11 +36,12 @@ const salary = $(element).text().match( numberPattern )
 
  //  using sortedArray to sort all the salaries from  highest to lowerst
  let sortedArray = salaries.sort((a,b) => b - a)
+ console.log('sorted',sortedArray.length)
   // sortedArray.splice()
   // using slice to grab the numbers starting 
   // from the zero index to the last element before 125 and storing those values 
   // inside top Salaries
-  let topSalaries = sortedArray.slice(0,125)
+  // let topSalaries = sortedArray.slice(0,125)
   //using reduce on topSalaries to calculate the sum and storing the sum in total
   let total = topSalaries.reduce((sum,salary) => sum + salary)
   
